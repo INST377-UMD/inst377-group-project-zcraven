@@ -1,0 +1,243 @@
+<html>
+    <head>
+        <title>Welcome To FoodFacts!</title>
+        <link rel ="stylesheet" href="style.css">
+        <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    </head>    
+    
+    <body>
+        <div id = "main-text">
+            <h1>FoodFacts Home Page</h1>
+        </div>
+
+        <!--Navigation Board-->
+        <nav id="main-navi">
+            <ul>
+                <li><a href="Index.html">Home</a></li>
+                <li><a href="FoodFacts_AboutPage.html">About</a></li>
+            </ul>
+        </nav>
+
+        <form>
+            <label for="product-name">Product Name or Barcode (ex: Nutella, or 3017624010701):</label>
+            <input type="text" id="product-name" name="product-name" required>
+            <br><br>
+            <button id="search-product" type="submit" class = "button-15">Search</button> 
+
+            <div id="typed-output"></div>
+
+            <div id="product-info"></div>
+        </form>
+        <!--Footer Code-->
+        <footer id = "bottom">
+            <p1>Learn more about your foods today!</p1>
+        </footer>
+
+        <script defer>
+            // code for Type.js for type animation
+            document.addEventListener('DOMContentLoaded', function () {
+                var options = {
+                    strings: ['Are you worried about what goes into your body?', 'Fear not, FoodFacts is here to save you!'],
+                    typeSpeed: 25,
+                    backSpeed: 20,
+                    loop: false
+                };
+        
+                // Initialize Typed.js
+                var typed = new Typed('#typed-output', options);
+            });
+        
+            // Function to convert JSON categories to readable names
+            function convertToReadableName(codifiedName) {
+                const mapping = {
+                    'alcohol': 'Alcohol',
+                    'alcohol_100g': 'Alcohol (per 100g)',
+                    'alcohol_serving': 'Alcohol Serving',
+                    'alcohol_unit': 'Alcohol Unit',
+                    'alcohol_value': 'Alcohol Value',
+                    'carbohydrates': 'Carbohydrates',
+                    'carbohydrates_100g': 'Carbohydrates (per 100g)',
+                    'carbohydrates_serving': 'Carbohydrates Serving',
+                    'carbohydrates_unit': 'Carbohydrates Unit',
+                    'carbohydrates_value': 'Carbohydrates Value',
+                    'carbon-footprint-from-known-ingredients_product': 'Carbon Footprint (from known ingredients, per product)',
+                    'carbon-footprint-from-known-ingredients_serving': 'Carbon Footprint (from known ingredients, per serving)',
+                    'energy': 'Energy',
+                    'energy-kcal': 'Energy (kcal)',
+                    'energy-kcal_100g': 'Energy (kcal, per 100g)',
+                    'energy-kcal_serving': 'Energy (kcal) Serving',
+                    'energy-kcal_unit': 'Energy (kcal) Unit',
+                    'energy-kcal_value': 'Energy (kcal) Value',
+                    'energy-kcal_value_computed': 'Energy (kcal) Value Computed',
+                    'energy-kj': 'Energy (kJ)',
+                    'energy-kj_100g': 'Energy (kJ, per 100g)',
+                    'energy-kj_serving': 'Energy (kJ) Serving',
+                    'energy-kj_unit': 'Energy (kJ) Unit',
+                    'energy-kj_value': 'Energy (kJ) Value',
+                    'energy-kj_value_computed': 'Energy (kJ) Value Computed',
+                    'energy_100g': 'Energy (per 100g)',
+                    'energy_serving': 'Energy Serving',
+                    'energy_unit': 'Energy Unit',
+                    'energy_value': 'Energy Value',
+                    'fat': 'Fat',
+                    'fat_100g': 'Fat (per 100g)',
+                    'fat_serving': 'Fat Serving',
+                    'fat_unit': 'Fat Unit',
+                    'fat_value': 'Fat Value',
+                    'fiber': 'Fiber',
+                    'fiber_100g': 'Fiber (per 100g)',
+                    'fiber_serving': 'Fiber Serving',
+                    'fiber_unit': 'Fiber Unit',
+                    'fiber_value': 'Fiber Value',
+                    'fruits-vegetables-legumes-estimate-from-ingredients_100g': 'Fruits, Vegetables, Legumes Estimate (from ingredients, per 100g)',
+                    'fruits-vegetables-legumes-estimate-from-ingredients_serving': 'Fruits, Vegetables, Legumes Estimate (from ingredients, per serving)',
+                    'fruits-vegetables-nuts-estimate-from-ingredients_100g': 'Fruits, Vegetables, Nuts Estimate (from ingredients, per 100g)',
+                    'fruits-vegetables-nuts-estimate-from-ingredients_serving': 'Fruits, Vegetables, Nuts Estimate (from ingredients, per serving)',
+                    'nova-group': 'NOVA Group',
+                    'nova-group_100g': 'NOVA Group (per 100g)',
+                    'nova-group_serving': 'NOVA Group Serving',
+                    'nutrition-score-fr': 'Nutrition Score (France)',
+                    'nutrition-score-fr_100g': 'Nutrition Score (France, per 100g)',
+                    'proteins': 'Proteins',
+                    'proteins_100g': 'Proteins (per 100g)',
+                    'proteins_serving': 'Proteins Serving',
+                    'proteins_unit': 'Proteins Unit',
+                    'proteins_value': 'Proteins Value',
+                    'salt': 'Salt',
+                    'salt_100g': 'Salt (per 100g)',
+                    'salt_serving': 'Salt Serving',
+                    'salt_unit': 'Salt Unit',
+                    'salt_value': 'Salt Value',
+                    'saturated-fat': 'Saturated Fat',
+                    'saturated-fat_100g': 'Saturated Fat (per 100g)',
+                    'saturated-fat_serving': 'Saturated Fat Serving',
+                    'saturated-fat_unit': 'Saturated Fat Unit',
+                    'saturated-fat_value': 'Saturated Fat Value',
+                    'sodium': 'Sodium',
+                    'sodium_100g': 'Sodium (per 100g)',
+                    'sodium_serving': 'Sodium Serving',
+                    'sodium_unit': 'Sodium Unit',
+                    'sodium_value': 'Sodium Value',
+                    'sugars': 'Sugars',
+                    'sugars_100g': 'Sugars (per 100g)',
+                    'sugars_serving': 'Sugars Serving',
+                    'sugars_unit': 'Sugars Unit',
+                    'sugars_value': 'Sugars Value',
+            };
+
+    return mapping[codifiedName] || codifiedName;
+}
+    // Function to handle API errors
+    function handleApiError(error) {
+        console.error('Error:', error.message);
+        document.getElementById('product-info').innerHTML = 'An error occurred while fetching the product information.';
+    }
+
+    // Function to display product information
+    function displayProductInfo(matchingProduct) {
+        const productInfoContainer = document.getElementById('product-info');
+        productInfoContainer.innerHTML = ''; // Clear previous content
+
+        const title = document.createElement('h2');
+        title.textContent = `Product Name: ${matchingProduct.product_name}`;
+
+        const ingredients = document.createElement('p');
+        ingredients.textContent = `Ingredients: ${matchingProduct.ingredients_text}`;
+
+        const table = document.createElement('table');
+        const tbody = document.createElement('tbody');
+
+        const addRow = (label, value, unit) => {
+            const row = document.createElement('tr');
+            const cellLabel = document.createElement('td');
+            const cellValue = document.createElement('td');
+
+            const readableLabel = convertToReadableName(label);
+
+            cellLabel.textContent = readableLabel;
+            cellValue.textContent = `${value} ${unit || ''}`;
+
+            row.appendChild(cellLabel);
+            row.appendChild(cellValue);
+
+            tbody.appendChild(row);
+        };
+
+        for (const key in matchingProduct.nutriments) {
+            const unitKey = `${key}_unit`;
+            const unit = matchingProduct[unitKey] || '';
+            addRow(key, matchingProduct.nutriments[key], unit);
+        }
+
+        table.appendChild(tbody);
+
+        const hr = document.createElement('hr');
+
+        // Append elements to the container
+        productInfoContainer.appendChild(title);
+        productInfoContainer.appendChild(ingredients);
+        productInfoContainer.appendChild(table);
+        productInfoContainer.appendChild(hr);
+    }
+
+    document.querySelector('form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const userInput = document.getElementById('product-name').value;
+
+        if (!isNaN(userInput)) {
+            // If userInput is a number, it's a barcode
+            const apiURLBarcode = `https://world.openfoodfacts.net/api/v2/product/${userInput}`;
+
+            fetch(apiURLBarcode)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const matchingProduct = data.product;
+
+                    if (matchingProduct) {
+                        // Display information for the matching product
+                        displayProductInfo(matchingProduct);
+                    } else {
+                        // Handle the case when no matching product is found
+                        document.getElementById('product-info').innerHTML = 'Product not found.';
+                    }
+                })
+                .catch(handleApiError);
+        } else {
+            // If userInput is not a number, it's a product name
+            const productName = userInput.toLowerCase();
+            const apiURL = `https://world.openfoodfacts.org/api/v2/search?search_terms=${productName}&page_size=90&json=true`;
+
+            fetch(apiURL)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const products = data.products;
+
+                    if (products.length > 0) {
+                        const matchingProduct = products.find(product => product.product_name.toLowerCase().includes(productName));
+
+                        if (matchingProduct) {
+                            // Display information for the matching product
+                            displayProductInfo(matchingProduct);
+                        } else {
+                            // Handle the case when no matching product is found
+                            document.getElementById('product-info').innerHTML = 'Product not found.';
+                        }
+                    } else {
+                        // Handle the case when no products are found
+                        document.getElementById('product-info').innerHTML = 'No products found.';
+                    }
+                })
+                .catch(handleApiError);
+        }
+    });
+</script>
+
+           
+
+            
+            
+        </script>
+    </body>
+</html>
